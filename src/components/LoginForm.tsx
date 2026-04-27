@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
-import { loginService } from "../services/user.service";
+import { useNavigate } from "react-router-dom";
+import { loginService } from "../services/users.service";
 
 /**
  * Formulario de Login
@@ -7,14 +8,20 @@ import { loginService } from "../services/user.service";
  * Botón: Entrar
  */
 export function LoginForm() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    loginService(data)
+  const onSubmit = async (data: any) => {
+    const token = await loginService(data);
+    if (token) {
+      // Redirigir a /info si el login fue exitoso
+      navigate("/info");
+    }
   };
 
   return (

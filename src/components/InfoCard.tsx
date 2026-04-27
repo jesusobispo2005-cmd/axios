@@ -1,18 +1,38 @@
+import { useEffect, useState } from "react";
+import { userInfoService } from "../services/users.service";
+
 /**
  * Tarjeta de Info del Usuario
  * Muestra: avatar con iniciales, nombre, email
  * Botón: Cerrar Sesión (visual, sin función)
  */
 export function InfoCard() {
+const [username, setUsername]=useState<string>()
+const [userlastname, setUserlastname]=useState<string>()
+const [useremail, setUseremail]=useState<string>()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await userInfoService();
+      setUsername(data.data.nombre)
+      setUserlastname(data.data.apellido)
+      setUseremail(data.data.email)
+      console.log(data);
+    };
+
+    // 2. La ejecutamos
+    fetchUser();
+  }, []);
+
   // Datos simulados (hardcodeados para maquetación)
-  const nombre = 'Juan Pérez';
-  const email = 'juan@ejemplo.com';
+  const nombre = username+' '+userlastname;
+  const email = useremail;
 
   // Obtener iniciales para el avatar
   const iniciales = nombre
-    .split(' ')
+    .split(" ")
     .map((n) => n[0])
-    .join('')
+    .join("")
     .toUpperCase();
 
   return (
@@ -21,7 +41,7 @@ export function InfoCard() {
         {/* Avatar circular */}
         <div
           className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
-          style={{ width: '80px', height: '80px', fontSize: '2rem' }}
+          style={{ width: "80px", height: "80px", fontSize: "2rem" }}
         >
           {iniciales}
         </div>

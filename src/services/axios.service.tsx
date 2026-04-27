@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const api= axios.create({
-    baseURL: "http://localhost:3000/api"
+const api = axios.create({
+  baseURL: "http://localhost:3000/api",
 });
 
 // "Middleware" de salida: Antes de que la petición se envíe
 api.interceptors.request.use(
   (config) => {
-    // Ejemplo: Añadir un token de autenticación automáticamente
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -20,15 +19,17 @@ api.interceptors.request.use(
   },
 );
 
-
 // "Middleware" de entrada: Al recibir la respuesta
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Ejemplo: Si el servidor da 401, podrías redirigir al login
+    // Si el servidor da 401, redirigir al login
     if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      // Usar window.location para navegar (compatible con React Router)
+      window.location.href = "/login";
       console.error("No autorizado");
     }
     return Promise.reject(error);

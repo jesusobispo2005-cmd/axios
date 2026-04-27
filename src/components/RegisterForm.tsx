@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { registerService } from "../services/user.service";
+import { registerService } from "../services/users.service";
 /**
  * Formulario de Registro
  * Campos: nombre, email, password, confirmar password
