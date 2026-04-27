@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { registerService } from "../services/user.service";
 /**
  * Formulario de Registro
  * Campos: nombre, email, password, confirmar password
@@ -12,7 +13,7 @@ export function RegisterForm() {
   } = useForm();
 
   const onSubmit=(data:any)=>{
-    console.log(data)
+    registerService(data)
   }
   return (
     <div className="card shadow">
@@ -65,6 +66,7 @@ export function RegisterForm() {
               Contraseña
             </label>
             <input
+            {...register('password')}
               type="password"
               className="form-control"
               id="password"
